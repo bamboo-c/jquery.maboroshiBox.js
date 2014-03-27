@@ -25,6 +25,24 @@ module.exports = (grunt) ->
 					ext: '.html'
 				]
 
+		prettify: # 出力HTMLのフォーマット
+			options:
+				"indent": 4
+				"condense": true
+				"indent_inner_html": true
+				"unformatted": [
+					"a"
+					"pre"
+				]
+			dist:
+				files: [
+					expand: true
+					cwd: '<%= dir.src %>'
+					ext: '.html'
+					src: ['*.html']
+					dest: '<%= dir.src %>'
+				]
+
 		autoprefixer: # ベンダープレフィックス付与設定
 			options:
 				browsers: [ "last 2 version","ie 8","ie 9" ]
@@ -69,5 +87,6 @@ module.exports = (grunt) ->
 		"autoprefixer"
 		"csscomb"
 		"uglify"
+		"prettify"
 	]
 	return
