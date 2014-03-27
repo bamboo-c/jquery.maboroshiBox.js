@@ -17,30 +17,14 @@ module.exports = (grunt) ->
 
 		slim: # slimのタスク
 			src:
+				options:
+					pretty: 'true'
 				files: [
 					expand: true
 					cwd: '<%= dir.src %>'
 					src: ['{,*/}*.slim']
 					dest: '<%= dir.src %>'
 					ext: '.html'
-				]
-
-		prettify: # 出力HTMLのフォーマット
-			options:
-				"indent": 4
-				"condense": true
-				"indent_inner_html": true
-				"unformatted": [
-					"a"
-					"pre"
-				]
-			dist:
-				files: [
-					expand: true
-					cwd: '<%= dir.src %>'
-					ext: '.html'
-					src: ['*.html']
-					dest: '<%= dir.src %>'
 				]
 
 		autoprefixer: # ベンダープレフィックス付与設定
@@ -55,12 +39,30 @@ module.exports = (grunt) ->
 				src: "<%= autoprefixer.default.src %>"
 				dest: "<%= autoprefixer.default.src %>"
 
+		connect: # 簡易サーバー
+			uses_defaults: {}
+
+		jshint: # js文法チェック
+			options:
+				jshintrc: ".jshintrc"
+			files: [
+				'Gruntfile.js'
+				'package.json'
+				'<%= dir.dist %>/*.js'
+				'.jshintrc'
+			]
+
 		uglify: # jsの結合と圧縮
+			options:
+				preserveComments: 'some'
 			dist:
 				files:
 					"<%= dir.dist %>/jquery.maboroshiBox.min.js" : "<%= dir.dist %>/jquery.maboroshiBox.js"
 
 		watch: # ファイル更新監視
+			options: # ライブリロードを有効にする
+				livereload: true
+
 			sass: # sassの監視
 				files: "<%= dir.src %>/site-assets/scss/*.scss"
 				tasks: 'sass'
@@ -69,9 +71,6 @@ module.exports = (grunt) ->
 				files: '<%= dir.src %>/*.slim'
 				tasks: ['slim']
 
-			html: # htmlの監視
-				files: "<%= dir.dist %>/*.html"
-
 	# pakage.jsonに記載されているパッケージをオートロード
 	for taskName of pkg.devDependencies
 		grunt.loadNpmTasks taskName  if taskName.substring(0, 6) is "grunt-"
@@ -79,14 +78,15 @@ module.exports = (grunt) ->
 	# 以下タスクの登録
 	# デフォルト（各ファイル監視してビルド）
 	grunt.registerTask "default", [
+		"connect"
 		"watch"
 	]
 
-	# リリース用ビルド
+	# コミット時ビルド
 	grunt.registerTask "dist", [
 		"autoprefixer"
 		"csscomb"
+		"jshint"
 		"uglify"
-		"prettify"
 	]
 	return
