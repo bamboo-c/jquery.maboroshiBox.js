@@ -1,0 +1,30 @@
+{
+  "name": "maboroshiBox",
+  "version": "0.0.0",
+  "description": "project of maboroshiBox",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bamboo-c/jquery.maboroshiBox.js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bamboo-c/jquery.maboroshiBox.js/issues"
+  },
+  "homepage": "https://github.com/bamboo-c/jquery.maboroshiBox.js",
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "grunt-autoprefixer": "~0.7.2",
+    "grunt-csscomb": "~2.0.1",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-contrib-uglify": "~0.4.0",
+    "grunt-contrib-sass": "~0.7.3",
+    "grunt-slim": "~0.1.0",
+    "grunt-contrib-connect": "~0.7.1",
+    "grunt-contrib-jshint": "~0.9.2"
+  }
+}
