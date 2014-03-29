@@ -4,3 +4,4 @@ thumbs.db
 node_modules
 .idea
 .jshintrc
+.npm-debug.log
