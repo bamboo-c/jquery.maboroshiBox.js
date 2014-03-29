@@ -49,6 +49,7 @@ module.exports = (grunt) ->
 				'Gruntfile.js'
 				'package.json'
 				'<%= dir.dist %>/*.js'
+				'!<%= dir.dist %>/*.min.js'
 				'.jshintrc'
 			]
 
