@@ -1,0 +1,22 @@
+.maboroshiBox-modal {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    z-index: 100;
+    display: none;
+}
+
+.maboroshiBox-bgLayer {
+    background: #000;
+    opacity: 0.3;
+    // IE8とかいうブラウザ用
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    display: none;
+}

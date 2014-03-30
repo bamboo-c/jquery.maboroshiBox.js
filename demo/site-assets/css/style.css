@@ -1,4 +1,12 @@
-#content
+#contents
 {
+    width: 400px;
+
     color: #111;
+    background: #fff;
+}
+
+.is-hide
+{
+    display: none;
 }
