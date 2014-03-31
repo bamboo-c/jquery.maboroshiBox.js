@@ -52,7 +52,7 @@
      * @method createCloseButton
      */
     createCloseButton: function () {
-      this.closeButton = $('<span class="' + this.options.closeClassName + '">閉じる</span>');
+      this.closeButton = $(this.options.closeHtml);
     },
 
     /**
@@ -66,7 +66,7 @@
         self.open(evt);
       });
 
-      // bgLayerとクローズボタンにcloseメソッドをバインド
+      // $bgLayerとクローズボタンにcloseメソッドをバインド
       self.$bgLayer.on('click', function () {
         self.close();
       });
@@ -84,6 +84,7 @@
       evt.preventDefault();
       this.$bgLayer.fadeIn('fast');
       this.$target
+        .css('top', this.getTop())
         .append(this.closeButton)
         .fadeIn('fast');
       return false;
@@ -96,6 +97,16 @@
     close: function () {
       this.$target.fadeOut('fast');
       this.$bgLayer.fadeOut('slow');
+    },
+
+    /**
+    * 天地中央にするための高さを求めるメソッド
+    * @method getTop
+    */
+    getTop: function () {
+      var winHeight     = $(window).height();
+      var targetHeight  = this.$target.height();
+      return (winHeight - targetHeight) / 2;
     }
   };
 
@@ -112,6 +123,6 @@
   // デフォルトオプション定義
   $.fn.maboroshiBox.defaults = {
     type: null,
-    closeClassName: 'maboroshi-closeButton'
+    closeHtml: '<span class="maboroshi-closeButton">閉じる</span>'
   };
 })(jQuery, this);
