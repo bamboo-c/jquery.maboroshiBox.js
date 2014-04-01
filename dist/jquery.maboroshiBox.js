@@ -43,13 +43,13 @@
     * @method init
     */
     init: function () {
+      this.$target.addClass('maboroshiBox__modal');
       // 初期化済みなら処理中断
       if (MaboroshiBox.initialized) {
         return;
       }
       // 背景レイヤー設定
       MaboroshiBox.$bgLayer     = $('<div class="maboroshiBox__bgLayer"/>').appendTo('body');
-      this.$target.addClass('maboroshiBox__modal');
       MaboroshiBox.initialized = true;
     },
 
@@ -95,7 +95,7 @@
       MaboroshiBox.$bgLayer.fadeIn('fast');
       this.$target
         .css('top', this.getTop())
-        .append(MaboroshiBox.closeButton)
+        .append(MaboroshiBox.$closeButton)
         .fadeIn('fast');
       return false;
     },
