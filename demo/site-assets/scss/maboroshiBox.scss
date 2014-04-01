@@ -1,4 +1,4 @@
-.maboroshiBox-modal {
+.maboroshiBox__modal {
     position: absolute;
     left: 0;
     right: 0;
@@ -7,7 +7,7 @@
     display: none;
 }
 
-.maboroshiBox-bgLayer {
+.maboroshiBox__bgLayer {
     background: #000;
     opacity: 0.3;
     // IE8とかいうブラウザ用

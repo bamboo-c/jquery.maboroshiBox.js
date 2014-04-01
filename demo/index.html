@@ -7,8 +7,8 @@
     <link href="/demo/site-assets/css/maboroshiBox.css" rel="stylesheet" />
   </head>
   <body>
-    <a class="maboroshiBox" href="#contents">open!</a>
-    <div class="is-hide" id="contents">
+    <a class="maboroshiBox" href="#modal1">open 1 !</a><a class="maboroshiBox" href="#modal2">open 2 !</a>
+    <div class="is-hide modalBlock" id="modal1">
       <h1>
         jQuery.maboroshiBox.js
       </h1>
@@ -16,8 +16,16 @@
         hogehoge
       </p>
     </div>
+    <div class="is-hide modalBlock" id="moda2">
+      <h1>
+        jQuery.maboroshiBox.js
+      </h1>
+      <p>
+        fugafuga
+      </p>
+    </div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="../dist/jquery.maboroshiBox.js"></script>
+    <script src="/dist/jquery.maboroshiBox.js"></script>
     <script type="text/javascript">
       ;(function() {
           var $target = $('.maboroshiBox');

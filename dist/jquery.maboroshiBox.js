@@ -26,13 +26,13 @@
     // プロパティ定義
     this.el        = el;
     this.$el       = $(this.el);
+    this.$target   = $(this.el.hash);
     this.options   = options;
-    this.$target   = $(this.$el.attr('href')).addClass('maboroshiBox-modal');
 
     // メソッド実行
     this.init();
     this.createCloseButton();
-    this.addEvent();
+    this.bindEvent();
   };
 
   // メソッド定義
@@ -43,8 +43,14 @@
     * @method init
     */
     init: function () {
+      // 初期化済みなら処理中断
+      if (MaboroshiBox.initialized) {
+        return;
+      }
       // 背景レイヤー設定
-      this.$bgLayer = $('<div class="maboroshiBox-bgLayer"/>').appendTo('body');
+      MaboroshiBox.$bgLayer     = $('<div class="maboroshiBox__bgLayer"/>').appendTo('body');
+      this.$target.addClass('maboroshiBox__modal');
+      MaboroshiBox.initialized = true;
     },
 
     /**
@@ -52,14 +58,18 @@
      * @method createCloseButton
      */
     createCloseButton: function () {
-      this.closeButton = $(this.options.closeHtml);
+      // 作成済みなら処理中断
+      if (MaboroshiBox.$closeButton) {
+        return;
+      }
+      MaboroshiBox.$closeButton = $(this.options.closeHtml);
     },
 
     /**
      * イベントを紐付けるためのメソッド
-     * @method addEvent
+     * @method bindEvent
      */
-    addEvent: function () {
+    bindEvent: function () {
       var self = this;
       // 指定クラス名の要素にopenメソッドをバインド
       self.$el.on('click', function (evt) {
@@ -67,10 +77,10 @@
       });
 
       // $bgLayerとクローズボタンにcloseメソッドをバインド
-      self.$bgLayer.on('click', function () {
+      MaboroshiBox.$bgLayer.on('click', function () {
         self.close();
       });
-      self.closeButton.on('click', function () {
+      MaboroshiBox.$closeButton.on('click', function () {
         self.close();
       });
     },
@@ -82,10 +92,10 @@
      */
     open: function (evt) {
       evt.preventDefault();
-      this.$bgLayer.fadeIn('fast');
+      MaboroshiBox.$bgLayer.fadeIn('fast');
       this.$target
         .css('top', this.getTop())
-        .append(this.closeButton)
+        .append(MaboroshiBox.closeButton)
         .fadeIn('fast');
       return false;
     },
@@ -96,7 +106,7 @@
      */
     close: function () {
       this.$target.fadeOut('fast');
-      this.$bgLayer.fadeOut('slow');
+      MaboroshiBox.$bgLayer.fadeOut('slow');
     },
 
     /**
