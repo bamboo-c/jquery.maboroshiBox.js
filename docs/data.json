@@ -1,0 +1,169 @@
+{
+    "project": {
+        "name": "jQuery.maboroshiBox",
+        "description": "モーダルウィンドウ表示用プラグイン",
+        "version": "1.0.0",
+        "url": "http://github.com/"
+    },
+    "files": {
+        "dist/jquery.maboroshiBox.js": {
+            "name": "dist/jquery.maboroshiBox.js",
+            "modules": {},
+            "classes": {
+                "MaboroshiBox": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "MaboroshiBox": {
+            "name": "MaboroshiBox",
+            "shortname": "MaboroshiBox",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "dist/jquery.maboroshiBox.js",
+            "line": 64,
+            "description": "モーダル用プラグイン",
+            "is_constructor": 1
+        }
+    },
+    "classitems": [
+        {
+            "file": "dist/jquery.maboroshiBox.js",
+            "line": 13,
+            "description": "ユーティリティ関数集",
+            "class": "MaboroshiBox"
+        },
+        {
+            "file": "dist/jquery.maboroshiBox.js",
+            "line": 18,
+            "description": "レガシー用デバッグ関数",
+            "itemtype": "method",
+            "name": "debug",
+            "return": {
+                "description": "ログを出力する関数",
+                "type": "Function"
+            },
+            "class": "MaboroshiBox"
+        },
+        {
+            "file": "dist/jquery.maboroshiBox.js",
+            "line": 37,
+            "description": "遅延処理",
+            "itemtype": "method",
+            "name": "wait",
+            "params": [
+                {
+                    "name": "delay",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "example": [
+                "\nhelper.wait(3000).done(function () {\n  // do something\n});"
+            ],
+            "class": "MaboroshiBox"
+        },
+        {
+            "file": "dist/jquery.maboroshiBox.js",
+            "line": 54,
+            "description": "端末によりイベント振り分け",
+            "itemtype": "property",
+            "name": "",
+            "return": {
+                "description": "'click' or 'touchend'",
+                "type": "String"
+            },
+            "class": "MaboroshiBox"
+        },
+        {
+            "file": "dist/jquery.maboroshiBox.js",
+            "line": 71,
+            "description": "背景レイヤー",
+            "itemtype": "property",
+            "name": "$bgLayer",
+            "type": "Object",
+            "class": "MaboroshiBox"
+        },
+        {
+            "file": "dist/jquery.maboroshiBox.js",
+            "line": 78,
+            "description": "閉じるボタン",
+            "itemtype": "property",
+            "name": "$closeButton",
+            "class": "MaboroshiBox"
+        },
+        {
+            "file": "dist/jquery.maboroshiBox.js",
+            "line": 88,
+            "description": "初期化のためのメソッド",
+            "itemtype": "method",
+            "name": "_init",
+            "access": "protected",
+            "tagname": "",
+            "class": "MaboroshiBox"
+        },
+        {
+            "file": "dist/jquery.maboroshiBox.js",
+            "line": 108,
+            "description": "モーダルを開くためのメソッド",
+            "itemtype": "method",
+            "name": "_open",
+            "access": "protected",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "イベントオブジェクト",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "MaboroshiBox"
+        },
+        {
+            "file": "dist/jquery.maboroshiBox.js",
+            "line": 134,
+            "description": "モーダルを閉じるためのメソッド",
+            "itemtype": "method",
+            "name": "_close",
+            "access": "protected",
+            "tagname": "",
+            "class": "MaboroshiBox"
+        },
+        {
+            "file": "dist/jquery.maboroshiBox.js",
+            "line": 147,
+            "description": "天地中央にするための高さを求めるメソッド",
+            "itemtype": "method",
+            "name": "_getTop",
+            "access": "protected",
+            "tagname": "",
+            "return": {
+                "description": "モーダルに設定する高さ",
+                "type": "Number"
+            },
+            "class": "MaboroshiBox"
+        },
+        {
+            "file": "dist/jquery.maboroshiBox.js",
+            "line": 159,
+            "description": "イベントを紐付けるためのメソッド",
+            "itemtype": "method",
+            "name": "bindEvent",
+            "access": "public",
+            "tagname": "",
+            "class": "MaboroshiBox"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "Missing item type\nユーティリティ関数集",
+            "line": " dist/jquery.maboroshiBox.js:13"
+        }
+    ]
+}

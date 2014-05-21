@@ -1,7 +1,12 @@
-.modalBlock {
-  width: 400px;
-  color: #111;
-  background: #fff; }
+.modalBlock
+{
+    width: 400px;
 
-.is-hide {
-  display: none; }
+    color: #111;
+    background: #fff;
+}
+
+.is-hide
+{
+    display: none;
+}

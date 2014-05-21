@@ -1,138 +1,190 @@
 /*!
- *  jQury.maboroshiBox.js
+ *  jQuery.maboroshiBox.js
  *  MIT-style license.
  *  2014 maboroshi, inc.
  */
 
-(function($, window, undefined) {
-  'use strict';
+(function ($, window, undefined) {
+    'use strict';
 
-  /**
-  * 便利関数など詰め合わせ
-  * @namespace helper
-  */
-  var helper = {
-  };
+    var arrayProto = Array.prototype,
+        slice      = arrayProto.slice,
 
-  /**
-  * モーダル用プラグイン
-  * @class MaboroshiBox
-  * @constructor
-  * @param {Node}   対象となるエレメント
-  * @param {Object} jQuery.fn.maboroshiBoxから渡ってくるoption
-  */
-  // コンストラクタ定義
-  var MaboroshiBox = function (el, options) {
-    // プロパティ定義
-    this.el        = el;
-    this.$el       = $(this.el);
-    this.$target   = $(this.el.hash);
-    this.options   = options;
+        /**
+         * ユーティリティ関数集
+         */
+        helper = {
 
-    // メソッド実行
-    this.init();
-    this.createCloseButton();
-    this.bindEvent();
-  };
+            /**
+             * レガシー用デバッグ関数
+             * @method debug
+             * @return {Function} ログを出力する関数
+             */
+            debug: (function () {
+                // window.consoleがない場合はalertデバッグ
+                var fn = function () {
+                    alert(arguments[0]);
+                };
+                if ('console' in window) {
+                    fn = function () {
+                        var args = slice.call(arguments);
+                        console.log(args);
+                    };
+                }
+                return fn;
+            })(),
 
-  // メソッド定義
-  MaboroshiBox.prototype = {
+            /**
+             * 遅延処理
+             * @method wait
+             * @param {Integer} delay
+             * @example
+             * helper.wait(3000).done(function () {
+             *   // do something
+             * });
+             */
+            wait: function (delay) {
+                var deferred = $.Deferred();
+                setTimeout(function () {
+                    deferred.resolve();
+                }, +delay);
+                return deferred.promise();
+            },
+
+            /**
+             * 端末によりイベント振り分け
+             * @property
+             * @return {String} 'click' or 'touchend'
+             */
+            clickEvent: (function () {
+                return 'touchend' in window ? 'touchend' : 'click';
+            })()
+        };
 
     /**
-    * 初期化のためのメソッド
-    * @method init
-    */
-    init: function () {
-      this.$target.addClass('maboroshiBox__modal');
-      // 初期化済みなら処理中断
-      if (MaboroshiBox.initialized) {
-        return;
-      }
-      // 背景レイヤー設定
-      MaboroshiBox.$bgLayer     = $('<div class="maboroshiBox__bgLayer"/>').appendTo('body');
-      MaboroshiBox.initialized = true;
-    },
-
-    /**
-     * クローズボタンを作成するメソッド
-     * @method createCloseButton
+     * モーダル用プラグイン
+     * @class MaboroshiBox
+     * @constructor
      */
-    createCloseButton: function () {
-      // 作成済みなら処理中断
-      if (MaboroshiBox.$closeButton) {
-        return;
-      }
-      MaboroshiBox.$closeButton = $(this.options.closeHtml);
-    },
+    function MaboroshiBox() {
+
+        /**
+         * 背景レイヤー
+         * @property $bgLayer
+         * @type Object
+         */
+        this.$bgLayer = $('<div class="maboroshiBox__bgLayer"/>');
+
+        /**
+         * 閉じるボタン
+         * @property $closeButton
+         */
+        this.$closeButton = $('<span class="maboroshiBox__closeButton">閉じる</span>');
+
+        // メソッド実行
+        this._init();
+    }
+
+    /**
+     * 初期化のためのメソッド
+     * @method _init
+     * @protected
+     */
+    MaboroshiBox.prototype._init = function () {
+        var self = this;
+
+        self.$bgLayer.appendTo('body');
+
+        // $bgLayerとクローズボタンにcloseメソッドをバインド
+        self.$bgLayer.on(helper.clickEvent, function () {
+            self._close();
+        });
+
+        self.$closeButton.on(helper.clickEvent, function () {
+            self._close();
+        });
+    };
+
+    /**
+     * モーダルを開くためのメソッド
+     * @method _open
+     * @protected
+     * @param {Object} イベントオブジェクト
+     */
+    MaboroshiBox.prototype._open = function (evt, $el, options) {
+        var $target;
+
+        if (options.type === 'inline') {
+            $target = $($el.attr('href'));
+        }
+
+        this.$bgLayer.fadeIn('fast');
+        $target
+            .addClass('js-maboroshiBox--visible')
+            .append(this.$closeButton)
+            .fadeIn('fast')
+            .css({
+                top: this._getTop($target)
+            });
+
+        evt.preventDefault();
+        return false;
+    };
+
+    /**
+     * モーダルを閉じるためのメソッド
+     * @method _close
+     * @protected
+     */
+    MaboroshiBox.prototype._close = function () {
+        $('.js-maboroshiBox--visible')
+            .removeClass('js-maboroshiBox--visible')
+            .fadeOut('fast');
+
+        this.$bgLayer.fadeOut('slow');
+    };
+
+    /**
+     * 天地中央にするための高さを求めるメソッド
+     * @method _getTop
+     * @protected
+     * @return {Number} モーダルに設定する高さ
+     */
+    MaboroshiBox.prototype._getTop = function ($el) {
+        var winHeight    = $(window).height(),
+            targetHeight = $el.height();
+        return (winHeight - targetHeight) / 2;
+    };
 
     /**
      * イベントを紐付けるためのメソッド
      * @method bindEvent
+     * @public
      */
-    bindEvent: function () {
-      var self = this;
-      // 指定クラス名の要素にopenメソッドをバインド
-      self.$el.on('click', function (evt) {
-        self.open(evt);
-      });
+    MaboroshiBox.prototype.bindEvent = function (obj) {
+        var $el  = $(obj.el),
+            self = this;
 
-      // $bgLayerとクローズボタンにcloseメソッドをバインド
-      MaboroshiBox.$bgLayer.on('click', function () {
-        self.close();
-      });
-      MaboroshiBox.$closeButton.on('click', function () {
-        self.close();
-      });
-    },
+        $el.on(helper.clickEvent, function (evt) {
+            self._open.apply(self, [evt, $el, obj.options]);
+        });
+    };
 
-    /**
-     * モーダルを開くためのメソッド
-     * @method open
-     * @param {Object} イベントオブジェクト
-     */
-    open: function (evt) {
-      evt.preventDefault();
-      MaboroshiBox.$bgLayer.fadeIn('fast');
-      this.$target
-        .css('top', this.getTop())
-        .append(MaboroshiBox.$closeButton)
-        .fadeIn('fast');
-      return false;
-    },
+    var maboroshiBox = new MaboroshiBox();
 
-    /**
-     * モーダルを閉じるためのメソッド
-     * @method close
-     */
-    close: function () {
-      this.$target.fadeOut('fast');
-      MaboroshiBox.$bgLayer.fadeOut('slow');
-    },
 
-    /**
-    * 天地中央にするための高さを求めるメソッド
-    * @method getTop
-    */
-    getTop: function () {
-      var winHeight     = $(window).height();
-      var targetHeight  = this.$target.height();
-      return (winHeight - targetHeight) / 2;
-    }
-  };
+    // jQueryのメンバーメソッドとしてmaboroshiBoxを定義
+    $.fn.maboroshiBox = function (options) {
+        options = $.extend({
+            type: 'inline'
+        }, options);
 
-  // jQueryのメンバーメソッドとしてmaboroshiBoxを定義
-  $.fn.maboroshiBox = function (options) {
-    // デフォルトオプションをユーザー定義で上書き
-    options = $.extend({}, $.fn.maboroshiBox.defaults, options);
+        return this.each(function (i, el) {
+            maboroshiBox.bindEvent({
+                el: el,
+                options: options
+            });
+        });
+    };
 
-    return this.each(function (i, el) {
-      var maboroshiBox = new MaboroshiBox(el, options);
-    });
-  };
-
-  // デフォルトオプション定義
-  $.fn.maboroshiBox.defaults = {
-    type: null,
-    closeHtml: '<span class="maboroshi-closeButton">閉じる</span>'
-  };
 })(jQuery, this);

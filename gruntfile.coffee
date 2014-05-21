@@ -72,6 +72,17 @@ module.exports = (grunt) ->
 				files: '<%= dir.src %>/*.slim'
 				tasks: ['slim']
 
+		yuidoc: #JS ドキュメント作成
+			compile:
+				name: 'jQuery.maboroshiBox'
+				description: 'モーダルウィンドウ表示用プラグイン'
+				version: '1.0.0'
+				url: 'http://github.com/'
+				options:
+					paths: 'dist/'
+					# themedir: 'path/to/custom/theme/'
+					outdir: 'docs/'
+
 	# pakage.jsonに記載されているパッケージをオートロード
 	for taskName of pkg.devDependencies
 		grunt.loadNpmTasks taskName  if taskName.substring(0, 6) is "grunt-"
@@ -90,4 +101,9 @@ module.exports = (grunt) ->
 		"jshint"
 		"uglify"
 	]
+
+	grunt.registerTask "doc", [
+		"yuidoc"
+	]
+
 	return

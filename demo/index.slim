@@ -19,5 +19,7 @@ html
     javascript:
         ;(function() {
             var $target = $('.maboroshiBox');
-            $target.maboroshiBox();
+            $target.maboroshiBox({
+              closeHtml: '<span class="maboroshi__box">閉じる <i icon="icon"></i></span>'
+            });
         })();
