@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>dist/jquery.maboroshiBox.js - jQuery.maboroshiBox</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="../assets/css/logo.png" title="jQuery.maboroshiBox"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 1.0.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/MaboroshiBox.html">MaboroshiBox</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: dist/jquery.maboroshiBox.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/*!
+ *  jQuery.maboroshiBox.js
+ *  MIT-style license.
+ *  2014 maboroshi, inc.
+ */
+
+(function ($, window, undefined) {
+    &#x27;use strict&#x27;;
+
+    var arrayProto = Array.prototype,
+        slice      = arrayProto.slice,
+
+        /**
+         * ユーティリティ関数集
+         */
+        helper = {
+
+            /**
+             * レガシー用デバッグ関数
+             * @method debug
+             * @return {Function} ログを出力する関数
+             */
+            debug: (function () {
+                // window.consoleがない場合はalertデバッグ
+                var fn = function () {
+                    alert(arguments[0]);
+                };
+                if (&#x27;console&#x27; in window) {
+                    fn = function () {
+                        var args = slice.call(arguments);
+                        console.log(args);
+                    };
+                }
+                return fn;
+            })(),
+
+            /**
+             * 遅延処理
+             * @method wait
+             * @param {Integer} delay
+             * @example
+             * helper.wait(3000).done(function () {
+             *   // do something
+             * });
+             */
+            wait: function (delay) {
+                var deferred = $.Deferred();
+                setTimeout(function () {
+                    deferred.resolve();
+                }, +delay);
+                return deferred.promise();
+            },
+
+            /**
+             * 端末によりイベント振り分け
+             * @property
+             * @return {String} &#x27;click&#x27; or &#x27;touchend&#x27;
+             */
+            clickEvent: (function () {
+                return &#x27;touchend&#x27; in window ? &#x27;touchend&#x27; : &#x27;click&#x27;;
+            })()
+        };
+
+    /**
+     * モーダル用プラグイン
+     * @class MaboroshiBox
+     * @constructor
+     */
+    function MaboroshiBox() {
+
+        /**
+         * 背景レイヤー
+         * @property $bgLayer
+         * @type Object
+         */
+        this.$bgLayer = $(&#x27;&lt;div class=&quot;maboroshiBox__bgLayer&quot;/&gt;&#x27;);
+
+        /**
+         * 閉じるボタン
+         * @property $closeButton
+         */
+        this.$closeButton = $(&#x27;&lt;span class=&quot;maboroshiBox__closeButton&quot;&gt;閉じる&lt;/span&gt;&#x27;);
+
+        // メソッド実行
+        this._init();
+    }
+
+    /**
+     * 初期化のためのメソッド
+     * @method _init
+     * @protected
+     */
+    MaboroshiBox.prototype._init = function () {
+        var self = this;
+
+        self.$bgLayer.appendTo(&#x27;body&#x27;);
+
+        // $bgLayerとクローズボタンにcloseメソッドをバインド
+        self.$bgLayer.on(helper.clickEvent, function () {
+            self._close();
+        });
+
+        self.$closeButton.on(helper.clickEvent, function () {
+            self._close();
+        });
+    };
+
+    /**
+     * モーダルを開くためのメソッド
+     * @method _open
+     * @protected
+     * @param {Object} イベントオブジェクト
+     */
+    MaboroshiBox.prototype._open = function (evt, $el, options) {
+        var $target;
+
+        if (options.type === &#x27;inline&#x27;) {
+            $target = $($el.attr(&#x27;href&#x27;));
+        }
+
+        this.$bgLayer.fadeIn(&#x27;fast&#x27;);
+        $target
+            .addClass(&#x27;js-maboroshiBox--visible&#x27;)
+            .append(this.$closeButton)
+            .fadeIn(&#x27;fast&#x27;)
+            .css({
+                top: this._getTop($target)
+            });
+
+        evt.preventDefault();
+        return false;
+    };
+
+    /**
+     * モーダルを閉じるためのメソッド
+     * @method _close
+     * @protected
+     */
+    MaboroshiBox.prototype._close = function () {
+        $(&#x27;.js-maboroshiBox--visible&#x27;)
+            .removeClass(&#x27;js-maboroshiBox--visible&#x27;)
+            .fadeOut(&#x27;fast&#x27;);
+
+        this.$bgLayer.fadeOut(&#x27;slow&#x27;);
+    };
+
+    /**
+     * 天地中央にするための高さを求めるメソッド
+     * @method _getTop
+     * @protected
+     * @return {Number} モーダルに設定する高さ
+     */
+    MaboroshiBox.prototype._getTop = function ($el) {
+        var winHeight    = $(window).height(),
+            targetHeight = $el.height();
+        return (winHeight - targetHeight) / 2;
+    };
+
+    /**
+     * イベントを紐付けるためのメソッド
+     * @method bindEvent
+     * @public
+     */
+    MaboroshiBox.prototype.bindEvent = function (obj) {
+        var $el  = $(obj.el),
+            self = this;
+
+        $el.on(helper.clickEvent, function (evt) {
+            self._open.apply(self, [evt, $el, obj.options]);
+        });
+    };
+
+    var maboroshiBox = new MaboroshiBox();
+
+
+    // jQueryのメンバーメソッドとしてmaboroshiBoxを定義
+    $.fn.maboroshiBox = function (options) {
+        options = $.extend({
+            type: &#x27;inline&#x27;
+        }, options);
+
+        return this.each(function (i, el) {
+            maboroshiBox.bindEvent({
+                el: el,
+                options: options
+            });
+        });
+    };
+
+})(jQuery, this);
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

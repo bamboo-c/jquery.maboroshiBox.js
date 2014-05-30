@@ -3,7 +3,23 @@ html
   head
     meta charset="utf-8"
     title jQuery.maboroshiBox.js
+    link rel="stylesheet" href="/demo/site-assets/css/style.css"
+    link rel="stylesheet" href="/demo/site-assets/css/maboroshiBox.css"
   body
-    #contents
+    a.maboroshiBox href="#modal1" open 1 !
+    a.maboroshiBox href="#modal2" open 2 !
+    #modal1.is-hide.modalBlock
       h1 jQuery.maboroshiBox.js
       p hogehoge
+    #modal2.is-hide.modalBlock
+      h1 jQuery.maboroshiBox.js
+      p fugafuga
+    script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"
+    script src="/dist/jquery.maboroshiBox.js"
+    javascript:
+        ;(function() {
+            var $target = $('.maboroshiBox');
+            $target.maboroshiBox({
+              closeHtml: '<span class="maboroshi__box">閉じる <i icon="icon"></i></span>'
+            });
+        })();
