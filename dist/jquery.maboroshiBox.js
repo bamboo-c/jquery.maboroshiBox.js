@@ -57,7 +57,7 @@
              * @return {String} 'click' or 'touchend'
              */
             clickEvent: (function () {
-                return 'touchend' in window ? 'touchend' : 'click';
+                return 'ontouchend' in window ? 'touchend' : 'click';
             })()
         };
 
